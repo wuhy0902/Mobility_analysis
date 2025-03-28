@@ -1,0 +1,49 @@
+route_no,segments,direction,comment
+1,6,-1,home to office
+1,7,1,home to office
+1,13,-1,home to office
+1,10,1,home to office
+1,11,1,home to office
+2,11,-1,office to home
+2,10,-1,office to home
+2,9,-1,office to home
+2,8,-1,office to home
+2,7,-1,office to home
+2,6,1,office to home
+3,6,-1,home to park to home
+3,5,-1,home to park to home
+3,4,-1,home to park to home
+3,3,-1,home to park to home
+3,2,1,home to park to home
+3,3,1,home to park to home
+3,4,1,home to park to home
+3,5,1,home to park to home
+3,6,1,home to park to home
+4,11,-1,office to restaurant
+4,10,-1,office to restaurant
+4,9,-1,office to restaurant
+4,14,1,office to restaurant
+4,15,1,office to restaurant
+5,15,-1,restaurant to home
+5,16,1,restaurant to home
+5,17,1,restaurant to home
+5,5,1,restaurant to home
+5,6,1,restaurant to home
+6,6,-1,home to supermarket
+6,7,1,home to supermarket
+6,18,1,home to supermarket
+6,19,1,home to supermarket
+6,20,1,home to supermarket
+7,20,-1,supermarket to home
+7,19,-1,supermarket to home
+7,18,-1,supermarket to home
+7,7,-1,supermarket to home
+7,6,1,supermarket to home
+8,6,-1,home to beach
+8,7,1,home to beach
+8,18,1,home to beach
+8,22,1,home to beach
+9,22,-1,beach to home
+9,18,-1,beach to home
+9,7,-1,beach to home
+9,6,1,beach to home
