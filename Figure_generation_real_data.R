@@ -212,14 +212,16 @@ mtext("Distance", side=2, line=2.2, cex=1.5)
 abline(h=2100, lwd=2, col="red")
 mtext("Cluster 1", side=1, line=-.2, at =8, cex=1.5, col="brown")
 mtext("Cluster 2", side=1, line=-.2, at =19, cex=1.5, col="blue")
-dev.copy(pdf, paste("real_app/cluster/1_dendrogram.pdf", sep=""))
-dev.off()
+
+  dir.create(dirname("real_app/cluster/1_dendrogram.pdf"), showWarnings = FALSE, recursive = TRUE)
+  dev.copy(pdf, "real_app/cluster/1_dendrogram.pdf")
+  dev.off()
 
 ### clustering
 hc_wd_cluster = cutree(hc_wd, h=2100)
 hc_wd_cluster
 
-cluster_plot_real_data(dat2,dat2d,1)
-cluster_plot_real_data(dat2,dat2d,2)
+cluster_plot_real_data(dat2,dat2d,1,save_path_density_folder="real_app/cluster",save_path_hourly_folder="real_app/cluster/hour")
+cluster_plot_real_data(dat2,dat2d,2,save_path_density_folder="real_app/cluster",save_path_hourly_folder="real_app/cluster/hour")
 
 }

@@ -59,6 +59,7 @@ plot_map = function(save_path_name = 'No') {
   
   # Save the plot as a PDF if a valid file path is provided
   if (save_path_name != 'No') {
+    dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)  # Copy the current plot to a PDF file
     dev.off()                      # Close the PDF device
   }
@@ -156,6 +157,7 @@ if (mtext_in_plot!=''){
              smallplot = c(0.9, 0.93, 0.2, 0.8))  # Adjusted to move it to the right
     
 if (save_path_name!='No'){
+  dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)
   dev.off()
 }
@@ -253,6 +255,7 @@ print(
   coord_cartesian(xlim = c(minx, maxx), ylim = c(miny, maxy))
 )
 if (save_path_name!='No'){
+  dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)
   dev.off()
 }
@@ -314,6 +317,7 @@ contour(x=unique(grid_center_need[,1]), y= unique(grid_center_need[,2]),
        inset = 0.01)     # Move legend closer to the plot
     mtext(paste("Time: ",time_text),side=3, at=-2.5, line=-1.5, cex=2)
 if (save_path_name!='No'){
+  dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)
   dev.off()
 }
@@ -426,6 +430,7 @@ pheatmap(
   main             = title
 )
 if (save_path_name!='No'){
+  dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)
   dev.off()
 }
@@ -452,6 +457,7 @@ for (i in 1:length(pattern_chosen)){
   mtext(paste0("Cluster ",pattern_chosen[i]), side=1, line=-.2, at =loc[i], cex=1, col=col_list[i])
 }
 if (save_path_name!='No'){
+  dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)
   dev.off()
 }
@@ -493,6 +499,7 @@ contour(x=unique(grid_center_need[,1]), y= unique(grid_center_need[,2]),
     image.plot(zlim = c(min_max_range[1],min_max_range[2]), legend.only = TRUE, 
                col = Mycolor(n_lv), horizontal = FALSE, smallplot= c(.82,.86,0.6,0.9))
     if (save_path_name!='No'){
+      dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)
   dev.off()
 }
@@ -592,6 +599,7 @@ print(
     labs(title = title_need, x = "X Coordinate", y = "Y Coordinate", shape = "Time of Day")  # Legend for time labels
 )
  if (save_path_name!='No'){
+  dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)
   dev.off()
 }
@@ -717,6 +725,7 @@ ggplot(plot_data, aes(x = time, y = velocity)) +
   theme_minimal()  # Use a clean theme
 )
 if (save_path_name!='No'){
+  dir.create(dirname(save_path_name), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name)
   dev.off()
 }

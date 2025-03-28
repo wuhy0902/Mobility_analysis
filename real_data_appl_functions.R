@@ -104,6 +104,7 @@ contour(x=f_gps_int$eval.points[[1]], y= f_gps_int$eval.points[[2]],
              col = Mycolor(n_lv), horizontal = FALSE, smallplot= c(.82,.86,0.6,0.9))
   }
   if (save_path_name_density!='No'){
+    dir.create(dirname(save_path_name_density), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name_density)
     dev.off()
   }
@@ -147,6 +148,7 @@ contour(x=f_gps_int$eval.points[[1]], y= f_gps_int$eval.points[[2]],
   mtext(paste("Time: ", timestr[(t_start+1)],"-",timestr[(t_start+2)]),side=3, at=0.05, line=-1.5, cex=2)
   }
   if (save_path_name_AS!='No'){
+    dir.create(dirname(save_path_name_AS), showWarnings = FALSE, recursive = TRUE)
     dev.copy(pdf, save_path_name_AS)
     dev.off()
   }
@@ -157,7 +159,7 @@ contour(x=f_gps_int$eval.points[[1]], y= f_gps_int$eval.points[[2]],
 
 
 
-cluster_plot_real_data = function(dat2,dat2d,clu_idx){
+cluster_plot_real_data = function(dat2,dat2d,clu_idx,save_path_density_folder='No',save_path_hourly_folder='No'){
   idx_select = dat2$Date %in% d_wd[hc_wd_cluster==clu_idx] 
   
   clu1_f_gps = kde(x=dat_2d[idx_select,], 
@@ -170,7 +172,7 @@ cluster_plot_real_data = function(dat2,dat2d,clu_idx){
   # correcting for the weight
   
   ### single contour selection for AS 2_clu1
-  pdf(paste("real_app/cluster/2_clu",clu_idx,".pdf", sep=""))
+  #pdf(paste("real_app/cluster/2_clu",clu_idx,".pdf", sep=""))
   par(mar=c(4,4,2,1))
   z_display = log(clu1_f_gps$estimate+1, base=2)
   contour(x=clu1_f_gps$eval.points[[1]], y= clu1_f_gps$eval.points[[2]],
@@ -181,7 +183,13 @@ cluster_plot_real_data = function(dat2,dat2d,clu_idx){
   .filled.contour(x=clu1_f_gps$eval.points[[1]], y= clu1_f_gps$eval.points[[2]],
                   z = z_display,
                   levels = z_lv,col = Mycolor(n_lv))
-  dev.off()
+  if (save_path_density_folder!='No'){
+    save_path_density = paste(save_path_density_folder,"/2_clu",clu_idx,".pdf", sep="")
+    dir.create(dirname(save_path_density), showWarnings = FALSE, recursive = TRUE)
+    dev.copy(pdf, save_path_density)
+    dev.off()
+  }
+
   
   ## center movement
   idx_select = dat2$Date %in% d_wd[hc_wd_cluster==clu_idx]
@@ -223,7 +231,7 @@ cluster_plot_real_data = function(dat2,dat2d,clu_idx){
                   xmin=c(xlim0[1],ylim0[1]), xmax=c(xlim0[2],ylim0[2]), 
                   gridsize=c(101,101))
   
-  pdf(paste("real_app/cluster/3_clu",clu_idx,"c.pdf", sep=""))
+  #pdf(paste("real_app/cluster/3_clu",clu_idx,"c.pdf", sep=""))
   
   par(mar=c(4,4,2,1))
   
@@ -240,7 +248,13 @@ cluster_plot_real_data = function(dat2,dat2d,clu_idx){
          cex=1.5)
   
   points(dynamics_c[(1:6)*8-2,2:3], pch=c(1:6), cex=1.5, lwd=2)
-  dev.off()
+
+  if (save_path_density_folder!='No'){
+    save_path_density = paste(save_path_density_folder,"/3_clu",clu_idx,"c.pdf", sep="")
+    dir.create(dirname(save_path_density), showWarnings = FALSE, recursive = TRUE)
+    dev.copy(pdf, save_path_density)
+    dev.off()
+  }
 
   ## Plottings
   t_res = 50
@@ -267,7 +281,7 @@ cluster_plot_real_data = function(dat2,dat2d,clu_idx){
     
     ## color plate
     z_display = log(f_gps_int$estimate+1, base=2)
-    pdf(paste("real_app/cluster/hour/fgps_clu",clu_idx,"_",t_start,".pdf", sep=""))
+    #pdf(paste("real_app/cluster/hour/fgps_clu",clu_idx,"_",t_start,".pdf", sep=""))
     par(mar=c(4,4,2,1))
     contour(x=f_gps_int$eval.points[[1]], y= f_gps_int$eval.points[[2]],
             z = z_display,xlim=xlim0, ylim=ylim0,
@@ -281,7 +295,14 @@ cluster_plot_real_data = function(dat2,dat2d,clu_idx){
     image.plot(zlim = c(0,13), legend.only = TRUE, 
                col = Mycolor(n_lv), horizontal = FALSE, smallplot= c(.82,.86,0.6,0.9))
     
-    dev.off()
+    if (save_path_hourly_folder!='No'){
+      save_path_density =paste(save_path_hourly_folder,"/fgps_clu",clu_idx,"_",t_start,".pdf", sep="")
+      dir.create(dirname(save_path_density), showWarnings = FALSE, recursive = TRUE)
+      dev.copy(pdf, save_path_density)
+      dev.off()
+    } 
+
+    
     
     ### activity space
     dat_AS = dat2[idx_select,]
@@ -307,7 +328,7 @@ cluster_plot_real_data = function(dat2,dat2d,clu_idx){
     # force the grid point maximum to be 1 -- it may be lower than 1 due to resolution
     z_as = matrix(z_as, nrow = nrow(f_gps_int$estimate), ncol = ncol(f_gps_int$estimate))
     
-    pdf(paste("real_app/cluster/hour/fgps_clu",clu_idx,"AS_",t_start,".pdf", sep=""))
+    #pdf(paste("real_app/cluster/hour/fgps_clu",clu_idx,"AS_",t_start,".pdf", sep=""))
     par(mar=c(4,4,2,1))
     contour(x=f_gps_int$eval.points[[1]], y= f_gps_int$eval.points[[2]],
             z = z_as, xlim=xlim0, ylim=ylim0,
@@ -320,8 +341,13 @@ cluster_plot_real_data = function(dat2,dat2d,clu_idx){
     legend("topright",col=c("limegreen", "orange","blue","red"),
            lwd=10, legend=c("99%","90%","70%","50%"), cex=1.5)
     mtext(paste("Time: ", timestr[(t_start+1)],"-",timestr[(t_start+2)]),side=3, at=0.05, line=-1.5, cex=2)
-    dev.off()
     
+    if (save_path_hourly_folder!='No'){
+      save_path_AS =paste(save_path_hourly_folder,"/fgps_clu",clu_idx,"AS_",t_start,".pdf", sep="")
+      dir.create(dirname(save_path_AS), showWarnings = FALSE, recursive = TRUE)
+      dev.copy(pdf, save_path_AS)
+      dev.off()
+    } 
   }
 }
 
@@ -329,6 +355,11 @@ scatterplot_generation = function(dat2,day_num,xlim0,ylim0,title,save_file_loc){
   dat_2d_day = dat2[dat2$Date==day_num,]
   plot(dat_2d_day$Long,dat_2d_day$Lat,xlim=xlim0,ylim=ylim0,xlab='x',ylab='y',main=title,axes=F)
   box()
-  dev.copy(pdf, save_file_loc)
+  dir.create(dirname(save_file_loc), showWarnings = FALSE, recursive = TRUE)
+  if (save_file_loc!='No'){
+    dir.create(dirname(save_file_loc), showWarnings = FALSE, recursive = TRUE)
+    dev.copy(pdf, save_file_loc)
   dev.off()
+  }
+  
 }
