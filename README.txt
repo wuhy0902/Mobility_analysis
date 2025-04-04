@@ -47,8 +47,9 @@ below. The name and format of each column should match these specifications:
 | Longitude  | Numeric (float)                             | Shifted longitude coordinates          |
 +------------+---------------------------------------------+----------------------------------------+
 
-
+--------------------------------------------------------------------------------
 HOW TO RUN THE CODE:
+--------------------------------------------------------------------------------
   - Main Script:
       Figure_generation_real_data.R
     Run this script directly to reproduce Figures 1 and 4–9 in the manuscript.
@@ -57,8 +58,10 @@ HOW TO RUN THE CODE:
       real_data_appl_functions.R
     Provides all functions required for real data analysis.
 
+--------------------------------------------------------------------------------
+OUTPUT:
+--------------------------------------------------------------------------------
 
-OUTPUT FILES AND FOLDERS:
 After running "Figure_generation_real_data.R" without modifications, figures will
 be generated and saved into several folders:
 

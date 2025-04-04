@@ -88,19 +88,19 @@ get_weight_single_day2 = function(day_i, obs_input, t1_temp, t2_temp){
 
 hs_determine = function(obs_input,all_w,hs_const,condi,indices_selected=NULL){
     
-        mu_w = sum(all_w*obs_input$x)
-        sw2 = sum(all_w*(obs_input$x-mu_w)^2)
-        mu_wy = sum(all_w*obs_input$y)
-        sw2y = sum(all_w*(obs_input$y-mu_wy)^2)
-        if (condi=='mar'){
-            hs = (hs_const*sqrt(sw2+sw2y))*(length(which(all_w>0)))^(-1/6)
-        }else if(condi=='int'){
-            hs = (hs_const*sqrt(sw2+sw2y))*(length(obs_input$x))^(-1/6)
-        }else{
-             hs = (hs_const*sqrt(sw2+sw2y))*(length(indices_selected))^(-1/6)
-        }
-        
-        return(hs)
+    mu_w = sum(all_w*obs_input$x)
+    sw2 = sum(all_w*(obs_input$x-mu_w)^2)
+    mu_wy = sum(all_w*obs_input$y)
+    sw2y = sum(all_w*(obs_input$y-mu_wy)^2)
+    if (condi=='mar'){
+        hs = (hs_const*sqrt(sw2+sw2y))*(length(which(all_w>0)))^(-1/6)
+    }else if(condi=='int'){
+        hs = (hs_const*sqrt(sw2+sw2y))*(length(obs_input$x))^(-1/6)
+    }else{
+            hs = (hs_const*sqrt(sw2+sw2y))*(length(indices_selected))^(-1/6)
+    }
+    
+    return(hs)
 }
 
 ht_determine = function(obs_amount,ht_const){
@@ -130,18 +130,13 @@ kde_gps = function(obs_input, grid_center_need, method,t_range_need=NULL,time_in
         #-------------same weight
         all_w = unlist(lapply(unique(obs_input$day),get_weight_single_day2,obs_input,time_interval[1],time_interval[2]))
         hs = hs_determine(obs_input,all_w/sum(all_w),hs_const,'int')
-        #----
-        
-        #------------
-        #all_w = unlist(lapply(unique(obs_input$day),get_weight_single_day,obs_input,time_interval[1],time_interval[2]))
-        #hs = hs_determine(obs_input,all_w/sum(all_w),hs_const,'mar')
         
         H = matrix(c(hs^2,0,0,hs^2),2,2)
         #------------------------
         ht = ht_determine(obs_amount,ht_const)
 
         all_obs = obs_input[,c(1,2)]
-        # w0 = dnorm(x= pmin(dat2$Time-t0,1-(dat2$Time-t0)), mean=0, sd = h_T)
+       
         get_weight_condition_raw=function(day_id,t,obs_all_day_list){
             return(dnorm((obs_all_day_list[[day_id]]$timestamp-t)/ht)/nrow(obs_all_day_list[[day_id]]))
         }
@@ -155,29 +150,23 @@ kde_gps = function(obs_input, grid_center_need, method,t_range_need=NULL,time_in
         for (t_id in 1:length(t_range_need)){
             t = t_range_need[t_id]
             w = unlist(lapply(1:length(all_days),get_weight_condition,t,obs_all_day_list))
-            
-            #--------------------different weight
-           #hs = hs_determine(obs_input,w/sum(w),hs_const,'int')
-            #H = matrix(c(hs^2,0,0,hs^2),2,2)
-            #print(hs)
-            #---------------------------------------
+        
             w = nrow(obs_input)*w/sum(w)
             w_sum = w_sum + w
             
-            #kde_esti = kde_esti + kde(as.matrix(obs_input[,c(1,2)]), H=H,w = w, eval.points=grid_center_need)$estimate
         }
         w_sum = nrow(obs_input)*w_sum/sum(w_sum)
         kde_esti = kde(as.matrix(obs_input[,c(1,2)]), H=H,w = w_sum, eval.points=grid_center_need)$estimate
-        #return(kde_esti/length(t_range_need))
+        
         return(kde_esti)
     }else if (method=='naive'){
         
-	indices_selected = which(obs_input$timestamp>=time_interval[1] & obs_input$timestamp<=time_interval[2])
-    all_w = unlist(lapply(unique(obs_input$day),get_weight_single_day,obs_input,time_interval[1],time_interval[2]))
-    hs = hs_determine(obs_input[indices_selected,],all_w/sum(all_w),hs_const,'naive', indices_selected)
-    # print(hs)
-    H = matrix(c(hs^2,0,0,hs^2),2,2)
-	kde_estimate = kde(as.matrix(obs_input[indices_selected,c(1,2)]), H=H, eval.points=grid_center_need)$estimate
+        indices_selected = which(obs_input$timestamp>=time_interval[1] & obs_input$timestamp<=time_interval[2])
+        all_w = unlist(lapply(unique(obs_input$day),get_weight_single_day,obs_input,time_interval[1],time_interval[2]))
+        hs = hs_determine(obs_input[indices_selected,],all_w/sum(all_w),hs_const,'naive', indices_selected)
+        # print(hs)
+        H = matrix(c(hs^2,0,0,hs^2),2,2)
+        kde_estimate = kde(as.matrix(obs_input[indices_selected,c(1,2)]), H=H, eval.points=grid_center_need)$estimate
         return(kde_estimate)
     
     }else if (method=='naive_naive_bandwidth'){

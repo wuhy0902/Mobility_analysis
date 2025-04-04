@@ -580,7 +580,7 @@ print(
 )+  # Plot lines
     geom_point(data = plot_data, color = "blue", aes(x = x, y = y, shape = t_id), size = 3) +
    scale_x_continuous(limits = c(-15, 15), expand = c(0, 0)) +
-  scale_y_continuous(limits = c(-11, 10), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-12, 10), expand = c(0, 0)) +
   coord_fixed() +
     # Shape by t_id
     scale_shape_manual(values = shape_palette) +  # Apply manual shape mapping
@@ -592,7 +592,7 @@ print(
     panel.grid = element_blank(),
     panel.background = element_blank(),
     plot.background = element_blank(),
-    plot.margin = margin(0, 0, 0, 0),
+    plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"),
     legend.margin = margin(0, 0, 0, 0),
     legend.box.margin = margin(0, 0, 0, 0),
     ) +
@@ -604,7 +604,6 @@ print(
   dev.off()
 }
 }
-
 
 
 moredense_centroid_plot = function(all_res_single_cluster_all_x, all_res_single_cluster_all_y, cluster_no,t_range_text, observations_multiple_days,t_range_need_condi, highlighted_points= c(24, 33, 42, 51, 57)){

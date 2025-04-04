@@ -35,6 +35,7 @@ hs_const = 0.065 #0.07
 ##------------------------For generating reference distribution----------------
 goal_interval_all = list(c(8/24,10/24),c(0,0.99999)) # interested interval
 measurement_error_all = c(0.1,0.2) # measurement error choice
+time_range = c('overall','8 AM-10 AM')
 
 #---------------------------Figures reproduction--------------------------------
 ##------------------ Figure 10 generation (8 mins,might be needed)---------------
@@ -65,9 +66,10 @@ measurement_error_all = c(0.1,0.2) # measurement error choice
       max_min_range = range_for_plot(list(true_density_for_obs), eps)
       
       # Plot the true density distribution (log-transformed)
+    
       density_plot(true_density_for_obs, eps, grid_center_need, 
-                   TeX("$\\log(f_{GPS}+\\xi), \\epsilon=0.2$ "), '(overall)', max_min_range, 
-                   save_path_name = 'sim/pic/basic/density_plot/true_density_overall02.pdf')
+                   TeX(paste0("$\\log(f_{GPS}+\\xi), \\epsilon=",measurement_error,"$")), paste0('(',time_range[id1],')'), max_min_range, 
+                   save_path_name = paste0('sim/pic/basic/density_plot/true_density_',time_range[id1],measurement_error,'.pdf'))
       
     }
   }
@@ -96,8 +98,13 @@ measurement_error_all = c(0.1,0.2) # measurement error choice
   freq_parameter = 479        # Default to 479 observations per day (1 obs per 3 mins); in paper, we also tried 159, 1439
   
   # Evaluate accuracy 
-  # Define the total number of iterations for estimation
-  running_time_total = 2
+  # Define the total number of iterations for estimation; 
+  # You can set it as a higher value to find the average accuracy of the estimator
+  # Note: in this file, for reproducing all pictures in paper, don't change its value at first because the randomness may change.
+  running_time_total = 1
+  
+  # Seed
+  running_time = 20250224
   
   # Initialize accuracy metrics for different estimation methods
   accu_naive_sum = 0
@@ -167,8 +174,6 @@ measurement_error_all = c(0.1,0.2) # measurement error choice
 #-------------------- More simulation preparation (must run before generating the following pictures)-----------------------
 ## Data generation
 {
-# Seed
-running_time = 20250224
 
 # Define the time interval for the observation data
 goal_interval = c(0, 0.99999)
